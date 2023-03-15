@@ -1,13 +1,16 @@
 "use client";
 
 import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
+import { useRouter } from "next/navigation";
 import { FormEvent, useRef } from "react";
 
 type Props = {};
 
 const Header = (props: Props) => {
   const inputRef = useRef<HTMLInputElement>(null);
-  const handleSearch = (e: FormEvent<HTMLFormElement>) => {
+  const router = useRouter();
+
+  const handleSearch = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const input = inputRef.current?.value;
 
@@ -18,8 +21,20 @@ const Header = (props: Props) => {
     try {
       // call our api to activate the scraper
       //   /api/activateScraper
+      const response = await fetch("/api/activateScrapper", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ search: input }),
+      });
+
+      const { collection_id } = await response.json();
+      console.log(collection_id);
+      router.push(`/search/${collection_id}`);
     } catch (error) {
       //   handle errors
+      console.log("err", error);
     }
 
     // wait for the response to come back
