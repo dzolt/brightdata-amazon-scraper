@@ -9,9 +9,9 @@ export default function Home() {
         Welcome to the Amazon Web Scraper
       </h1>
 
-      <h2 className="txt-lg italic text-center text-black/50">TEXT TEXT</h2>
-
-      <h3 className="text-lg text-center italic text-black/50">LINK</h3>
+      <h2 className="txt-lg italic text-center text-black/50">
+        Developed by Damian Zoltowski
+      </h2>
     </div>
   );
 }
