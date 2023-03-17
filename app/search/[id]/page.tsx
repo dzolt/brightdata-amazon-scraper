@@ -68,8 +68,10 @@ const SearchPage = ({ params: { id } }: Props) => {
       <div className="flex items-center justify-center py-5">
         <div className="flex flex-col items-center md:flex-row gap-x-4 pr-2 md:pr-6">
           <h1 className="font-bold">
-            Search results for{" "}
-            <span className="text-indigo-600">"{snapshot.data()?.search}"</span>
+            Search results for&nbsp;
+            <span className="text-indigo-600">
+              &ldquo;{snapshot.data()?.search}&rdquo;
+            </span>
           </h1>
           <p className="text-gray-300">
             {snapshot.data()?.results?.length > 0 &&
