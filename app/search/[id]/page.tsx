@@ -1,9 +1,11 @@
 "use client";
 
 import Results from "@/components/Results";
-import { doc } from "firebase/firestore";
+import { deleteDoc, doc } from "firebase/firestore";
 import { useDocument } from "react-firebase-hooks/firestore";
 import { db } from "../../../firebase";
+import Spinner from "react-spinkit";
+import { useRouter } from "next/navigation";
 
 type Props = {
   params: {
@@ -13,6 +15,21 @@ type Props = {
 
 const SearchPage = ({ params: { id } }: Props) => {
   const [snapshot, loading, error] = useDocument(doc(db, "searches", id));
+  const router = useRouter();
+
+  const handleDelete = () => {
+    deleteDoc(doc(db, "searches", id));
+    router.push("/");
+  };
+
+  const deleteButton = (
+    <button
+      className="bg-indigo-600 text-white px-4 py-2 rounded-lg"
+      onClick={handleDelete}
+    >
+      Delete Search
+    </button>
+  );
 
   if (loading) {
     return (
@@ -30,6 +47,18 @@ const SearchPage = ({ params: { id } }: Props) => {
         <p className="text-indigo-600 animate-pulse text-center">
           Scraping results from Amazon...
         </p>
+
+        <Spinner
+          style={{
+            height: "100px",
+            width: "100px",
+          }}
+          name="cube-grid"
+          fadeIn="none"
+          color="indigo"
+        />
+
+        {deleteButton}
       </div>
     );
   }
@@ -37,7 +66,7 @@ const SearchPage = ({ params: { id } }: Props) => {
   return (
     <>
       <div className="flex items-center justify-center py-5">
-        <div className="flex flex-col md:flex-row gap-x-4">
+        <div className="flex flex-col items-center md:flex-row gap-x-4 pr-2 md:pr-6">
           <h1 className="font-bold">
             Search results for{" "}
             <span className="text-indigo-600">"{snapshot.data()?.search}"</span>
@@ -47,6 +76,8 @@ const SearchPage = ({ params: { id } }: Props) => {
               `${snapshot.data()?.results?.length} results found`}
           </p>
         </div>
+
+        {deleteButton}
       </div>
       {snapshot.data()?.results?.length > 0 && (
         <Results results={snapshot.data()?.results} />

@@ -20,19 +20,19 @@ const SidebarRow = ({ doc }: Props) => {
 
   return (
     <li
-      className={`flex justify-between p-4 cursor-pointer hover:bg-white hover:shadow-md rounded-lg ${
+      className={`flex flex-col md:flex-row items-center justify-between p-4 gap-2 cursor-pointer hover:bg-white hover:shadow-md rounded-lg ${
         active && "bg-white shadow-md"
       }`}
       onClick={() => router.push(`/search/${doc.id}`)}
     >
-      <div className="flex flex-col justify-center">
+      <div className="flex flex-col justify-center text-center">
         <p className="text-xs md:text-base font-bold">{doc.data().search}</p>
         {doc.data().status === "pending" && (
           <p className="text-xs">Scraping information...</p>
         )}
       </div>
 
-      <span className="ml-2">
+      <span className="-order-2 md:order-1">
         {doc.data().status === "pending" ? (
           <Spinner name="cube-grid" fadeIn="none" color="indigo" />
         ) : (
